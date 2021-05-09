@@ -1,0 +1,43 @@
+version: '3.3'
+services:
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    ports:
+      - 9000:9090
+    command: --web.enable-lifecycle  --config.file=/etc/prometheus/prometheus.yml
+    volumes:
+      - ./prometheus:/etc/prometheus
+      - prometheus-data:/prometheus
+  dockerfile:
+    image: dockerfile:latest
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /home/tioaki02/MEGAsync/eclipseWorkspace/solarparkemulator-app/data:/code/src/main/resources:rw
+      - /home/tioaki02/MEGAsync/eclipseWorkspace/solarparkemulator-app/configs/ucy.conf:/code/configs/solarpark.conf:rw
+    ports:
+      - 4567:4567 
+  grafana:
+    image: grafana/grafana:latest
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+    env_file:
+      - ./grafana/config.monitoring
+    restart: always
+  stream-events:
+    build: .
+    image: python-fronius:0.0.1
+    environment:
+      FRONIUS_URL: "localhost:4567"
+      FRONIUS_SENSORS_PATH: "solar_api/v1/GetSensorRealtimeData.cgi?Scope=Device&DataCollection=NowSensorData&DeviceId=1"
+      FRONIUS_PV_PATH: "solar_api/v1/GetPowerFlowRealtimeData.fcgi"
+      PREFIX: "cyprus__nicosia__ucy__dc1__fronius_"
+      FRONIUS_TIMEOUT: 15
+    ports:
+      - 19999:19999
+volumes:
+  prometheus-data: {}
+  grafana_data: {}

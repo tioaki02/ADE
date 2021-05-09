@@ -1,0 +1,15 @@
+global:
+  scrape_interval: 15s
+  scrape_timeout: 10s
+
+rule_files:
+  - alert.yml
+
+scrape_configs:
+  - job_name:       'services'
+    static_configs:
+      - targets: ['localhost:9090']
+  - job_name:       'services2'
+    metrics_path: '/api/v1/allmetrics'
+    static_configs:
+      - targets: ['localhost:19999']

@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  stream-events:
+    build: .
+    image: python-fronius:0.0.1
+    environment:
+      FRONIUS_URL: 'http://0.0.0.0:4567'
+      FRONIUS_SENSORS_PATH: 'solar_api/v1/GetSensorRealtimeData.cgi?Scope=Device&DataCollection=NowSensorData&DeviceId=1'
+      FRONIUS_PV_PATH: 'solar_api/v1/GetPowerFlowRealtimeData.fcgi'
+      PREFIX: "cyprus__nicosia__ucy__dc1__fronius_"
+      FRONIUS_TIMEOUT: 15
+    ports:
+      - 19999:19999
