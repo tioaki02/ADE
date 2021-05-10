@@ -6,10 +6,10 @@ rule_files:
   - alert.yml
 
 scrape_configs:
-  - job_name:       'services'
-    static_configs:
-      - targets: ['localhost:9090']
-  - job_name:       'services2'
+#  - job_name:       'services'
+#    static_configs:
+#      - targets: ['localhost:9090']
+  - job_name:       'fronius'
     metrics_path: '/api/v1/allmetrics'
     static_configs:
-      - targets: ['localhost:19999']
+      - targets: ['fronius:19999']
