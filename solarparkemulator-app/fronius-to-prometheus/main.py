@@ -4,6 +4,7 @@ from venv import logger
 import requests
 from prometheus_client.metrics_core import GaugeMetricFamily
 from prometheus_client.registry import CollectorRegistry
+import json
 
 url = str(os.getenv("FRONIUS_URL", "http://0.0.0.0:4567"))
 sensors_path = str(os.getenv("FRONIUS_SENSORS_PATH",
@@ -22,7 +23,7 @@ class CustomCollector(object):
         try:
             logger.error(f"http://{url}/{pv_path}")
             power_request = requests.get(f"http://{url}/{pv_path}")
-            tmp = power_request.text
+            tmp = power_request.text.replace('null', '0.0')
             power_request = json.loads(tmp)
             self.__stored_data['power_request'] = power_request
         except Exception:
@@ -40,8 +41,8 @@ class CustomCollector(object):
         yield self.__E_Day(site, timestamp, prefix)
 
         try:
-            sensors_request = requests.get(f"http://{url}/{sensors_path}", timeout=timeout).json()
-            self.__stored_data['sensors_request'] = sensors_request
+            sensors_request = requests.get(f"http://{url}/{sensors_path}", timeout=timeout).text.replace('null', '0.0')
+            self.__stored_data['sensors_request'] = json.loads(sensors_request)
         except Exception:
             logger.error("Exception during sensors' data request")
             sensors_request = self.__stored_data.get('sensors_request', {})
