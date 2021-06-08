@@ -8,7 +8,7 @@ import json
 
 url = str(os.getenv("FRONIUS_URL", "http://0.0.0.0:4567"))
 sensors_path = str(os.getenv("FRONIUS_SENSORS_PATH",
-                             "solar_api/v1/GetSensorRealtimeData.cgi?Scope=Device&DataCollection=NowSensorData&DeviceId=1"))
+                             "solar_api/v1/GetSensorRealtimeData.cgi?DataCollection=NowSensorData&Scope=System"))
 pv_path = str(os.getenv("FRONIUS_PV_PATH", "solar_api/v1/GetPowerFlowRealtimeData.fcgi"))
 prefix = str(os.getenv("PREFIX", "cyprus__nicosia__ucy__dc1__fronius_"))
 timeout = int(os.getenv("FRONIUS_TIMEOUT", 15))
@@ -41,11 +41,15 @@ class CustomCollector(object):
         yield self.__E_Day(site, timestamp, prefix)
 
         try:
-            sensors_request = requests.get(f"http://{url}/{sensors_path}", timeout=timeout).text.replace('null', '0.0')
-            self.__stored_data['sensors_request'] = json.loads(sensors_request)
+            sensors_request = requests.get(f"http://{url}/{sensors_path}")
+            tmp=sensors_request.text.replace('null', '0.0')
+            logger.error(f"http://{url}/{sensors_path}")
+            sensors_request = json.loads(tmp)
+            self.__stored_data['sensors_request'] = sensors_request
         except Exception:
             logger.error("Exception during sensors' data request")
             sensors_request = self.__stored_data.get('sensors_request', {})
+
 
         sensor_data, timestamp = self.get_data_and_timestamp(sensors_request)
         yield self.__temperature_top(sensor_data, timestamp, prefix)
