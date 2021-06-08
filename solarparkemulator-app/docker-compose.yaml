@@ -14,8 +14,8 @@ services:
     image: pvsim:0.0.1
     volumes:
       - /etc/timezone:/etc/timezone:ro
-      - /home/tioaki02/MEGAsync/eclipseWorkspace/solarparkemulator-app/data:/code/src/main/resources:rw
-      - /home/tioaki02/MEGAsync/eclipseWorkspace/solarparkemulator-app/configs/ucy.conf:/code/configs/solarpark.conf:rw
+      - ./data:/code/src/main/resources:rw
+      - ./configs/ucy.conf:/code/configs/solarpark.conf:rw
     ports:
       - 4567:4567 
   grafana:
@@ -39,6 +39,17 @@ services:
       FRONIUS_TIMEOUT: 15
     ports:
       - 19999:19999
+  consul-server:
+    image: hashicorp/consul:1.9.3
+    container_name: consul-server
+    restart: always
+    volumes:
+     - ./consul/server.json:/consul/config/server.json:ro
+    ports:
+      - "8500:8500"
+      - "8600:8600/tcp"
+      - "8600:8600/udp"
+    command: "agent"
 volumes:
   prometheus-data: {}
   grafana_data: {}

@@ -1,0 +1,24 @@
+{
+  "Node": "pvsim",
+  "Address": "localhost:19999/api/v1/allmetrics",
+  "NodeMeta": {
+    "external-node": "true",
+    "external-probe": "true"
+  },
+  "Service": {
+    "ID": "pvsim1",
+    "Service": "pvsim1",
+    "Port": 19999
+  },
+  "Checks": [
+    {
+      "Name": "http-check",
+      "status": "passing",
+      "Definition": {
+        "http": "localhost:19999/api/v1/allmetrics",
+        "interval": "10s"
+      }
+    }
+  ]
+}
+
