@@ -174,12 +174,12 @@ public class solarPark {
 			this.ghi.add(Integer.parseInt(fields[11]));
 			this.zenith.add(Integer.parseInt(fields[20]));
 			if (i > 1 && Math.abs(unixTime - timestamps.get(timestamps.size() - 2)) > 3600) {
-				System.out.println("data error");
+				//System.out.println("data error");
 				java.util.Date time2 = new java.util.Date((long) unixTime * 1000);
 				java.util.Date time3 = new java.util.Date((long) timestamps.get(timestamps.size() - 2) * 1000);
-				System.out.println(unixTime + " " + timestamps.get(timestamps.size() - 2));
-				System.out.println(time2+" "+time3);
-				System.out.println();
+				//System.out.println(unixTime + " " + timestamps.get(timestamps.size() - 2));
+				//System.out.println(time2+" "+time3);
+				//System.out.println();
 			}
 		}
 
