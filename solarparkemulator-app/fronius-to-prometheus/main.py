@@ -156,6 +156,27 @@ class CustomCollector(object):
 
 registry.register(CustomCollector())
 
+def register_to_consul():
+    name = os.getenv("FRONIUS_CONTAINER_NAME")
+    server = os.getenv("CONSUL_SERVER")
+    payload = {
+      "ID": name,
+      "Name": name,
+      "Tags": [
+        "fronius"
+      ],
+      "Address": name,
+      "Port": 19999,
+      "EnableTagOverride": False,
+      "Check": {
+        "DeregisterCriticalServiceAfter": "90m",
+        "HTTP": f"http://{name}:19999/api/v1/allmetrics?format=prometheus&help=no",
+        "Interval": "15s"
+      }
+    }
+    print(json.dumps(payload))
+    print(requests.put(f"http://{server}:8500/v1/agent/service/register?replace-existing-checks=1", data=json.dumps(payload)).text)
+
 from flask import Flask
 from werkzeug.middleware.dispatcher import DispatcherMiddleware
 from prometheus_client import make_wsgi_app
@@ -167,6 +188,16 @@ app = Flask(__name__)
 app.wsgi_app = DispatcherMiddleware(app.wsgi_app, {
     '/api/v1/allmetrics': make_wsgi_app(registry)
 })
+
+consul_is_enabled = os.getenv("CONSUL_ENABLED").upper() == "TRUE"
+is_register = False
+if consul_is_enabled:
+    while(not is_register):
+        try:
+            register_to_consul()
+            is_register = True
+        except Exception as e:
+            print(e)
 
 app.run(host="0.0.0.0", port=19999)
 

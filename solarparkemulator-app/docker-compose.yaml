@@ -37,8 +37,13 @@ services:
       FRONIUS_PV_PATH: "solar_api/v1/GetPowerFlowRealtimeData.fcgi"
       PREFIX: "cyprus__nicosia__ucy__dc1__fronius_"
       FRONIUS_TIMEOUT: 15
+      FRONIUS_CONTAINER_NAME: "fronius"
+      CONSUL_ENABLED: "true"
+      CONSUL_SERVER: "consul-server"
     ports:
       - 19999:19999
+    depends_on:
+      - consul-server
   consul-server:
     image: hashicorp/consul:1.9.3
     container_name: consul-server
