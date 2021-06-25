@@ -55,6 +55,9 @@ services:
       - "8600:8600/tcp"
       - "8600:8600/udp"
     command: "agent"
+  stress:
+    image: progrium/stress
+    command: '--cpu 2 --io 1 --vm 2 --vm-bytes 128M -q'
 volumes:
   prometheus-data: {}
   grafana_data: {}

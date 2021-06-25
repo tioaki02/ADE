@@ -196,6 +196,7 @@ if consul_is_enabled:
         try:
             register_to_consul()
             is_register = True
+            print("register success")
         except Exception as e:
             print(e)
 

@@ -380,6 +380,8 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
+		System.setProperty("org.eclipse.jetty.util.log.class", "org.eclipse.jetty.util.log.StdErrLog");
+		System.setProperty("org.eclipse.jetty.LEVEL", "OFF");
 		BasicConfigurator.configure();
 		// port(8080);
 		get("/solar_api/v1/GetPowerFlowRealtimeData.fcgi", (request, response) -> {
