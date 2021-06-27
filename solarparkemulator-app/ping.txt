@@ -1,0 +1,14 @@
+LATENCY IN MS BETWEEN REGIONS (AWS DATACENTERS)
+
+------------------------      US-EAST-2 (OHIO)  CA-CENTRAL-1 (CANADA)  EU-WEST-2 (LONDON)  EU-CENTRAL-1 (FRANKFURT)  AP-NORTHEAST-1 (TOKYO)
+US-EAST-2 (OHIO)		  N/A                  24.903                86.228                97.295                  158.573
+CA-CENTRAL-1 (CANADA)           25.197                 N/A                  90.435                100.51                  189.702
+EU-WEST-2 (LONDON)              86.355                90.354                N/A                   13.618                  219.636
+EU-CENTRAL-1 (FRANKFURT)	 96.927                100.19                13.625                 N/A                    240.558
+AP-NORTHEAST-1 (TOKYO)          157.309               155.588               236.558               240.761                  N/A
+
+
+https://docs.aviatrix.com/HowTos/inter_region_latency.html
+https://medium.com/@sachinkagarwal/public-cloud-inter-region-network-latency-as-heat-maps-134e22a5ff19
+https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/using-regions-availability-zones.html
+

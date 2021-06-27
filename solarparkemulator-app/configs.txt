@@ -1,0 +1,7 @@
+./configs/ohio.conf:/code/configs/solarpark.conf:rw
+./configs/canada.conf:/code/configs/solarpark.conf:rw
+./configs/london.conf:/code/configs/solarpark.conf:rw
+./configs/frankfurt.conf:/code/configs/solarpark.conf:rw
+./configs/tokyo.conf:/code/configs/solarpark.conf:rw
+
+
